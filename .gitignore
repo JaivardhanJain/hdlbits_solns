@@ -1,0 +1,26 @@
+# Simulation artifacts
+*.vcd
+*.vvp
+*.out
+sim
+a.out
+
+# Vivado / Quartus project junk (in case you paste in FPGA-side work later)
+*.jou
+*.log
+*.str
+.Xil/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+db/
+incremental_db/
+*.qws
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
