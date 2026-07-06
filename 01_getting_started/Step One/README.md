@@ -18,4 +18,4 @@ Just a continuous assignment (`assign`) to 1, no logic needed.
 
 ## Solution
 
-See `solution.v`
+See `step_one.v`
