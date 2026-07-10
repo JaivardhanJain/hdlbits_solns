@@ -18,4 +18,4 @@ A continuous assignment (`assign`) from the inputs to the output, after adding a
 
 ## Solution
 
-See `and_gate.v`
+See `nor_gate.v`
