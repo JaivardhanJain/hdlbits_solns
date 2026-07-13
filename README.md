@@ -11,4 +11,5 @@ Problem Category and Difficulty
 |  7  | Norgate   | Basic Syntax | ⭐ | Using multiple operators together                |
 |  8  | Xnorgate  | Basic Syntax | ⭐ | Using multiple operators together                |
 |  9  | Wire decl | Basic Syntax | ⭐ | Learn wire declaration syntax and logic          |
-|  10 | 7458      | Basic Syntax | ⭐⭐ | Using logic and wire declaration for a real chip |
+| 10  | 7458      | Basic Syntax | ⭐⭐ | Using logic and wire declaration for a real chip |
+| 11  | Vector0   | Basic Syntax | ⭐ | Learn basic vector syntax |
