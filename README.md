@@ -2,6 +2,7 @@
 Solutions for HDLBits with explanations, faq, difficulty, categories and best practices 
 
 Problem Category and Difficulty
+
 |  1  | Step One  | Basic Syntax | ⭐ | Just to understand Verilog Syntax                |
 
 |  2  | Zero      | Basic Syntax | ⭐ | Just to understand Verilog Syntax                |
@@ -25,3 +26,5 @@ Problem Category and Difficulty
 | 11  | Vector0   | Basic Syntax | ⭐ | Learn basic vector syntax                        |
 
 | 12  | Vector1   | Basic Syntax | ⭐ | Learn more vector syntax                         |
+
+| 13  | Vector2   | Basic Syntax | ⭐ | Learn more vector syntax                         |
