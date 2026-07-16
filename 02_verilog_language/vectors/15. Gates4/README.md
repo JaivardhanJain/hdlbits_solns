@@ -21,6 +21,4 @@ Use continuous assigns and use bitwise operators as reduction operators.
 
 ## Solution
 
-## Solution
-
 See `gates4.v`

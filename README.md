@@ -32,3 +32,5 @@ Problem Category and Difficulty
 | 14  | Vectorgates | Basic Syntax | ⭐ | Learn bitwise and logical syntax                 |
 
 | 15  | Gates4      | Basic Syntax | ⭐ | Learn unary reduction operator syntax            |
+
+| 16  | Vector3     | Basic Syntax | ⭐ | Learn the concatenation operator                 |
