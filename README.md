@@ -35,8 +35,10 @@ Problem Category and Difficulty
 
 | 16  | Vector3     | Basic Syntax | ⭐ | Learn the concatenation operator                 |
 
-| 17  | Vectorr     | Basic Syntax | ⭐ | More practice with the concatenation operator    |
+| 17  | Vectorr         | Basic Syntax | ⭐ | More practice with the concatenation operator    |
 
-| 18  | Vector4     | Basic Syntax | ⭐ | Learn the replication operator                   |
+| 18  | Vector4         | Basic Syntax | ⭐ | Learn the replication operator                   |
 
-| 19  | Vector5     | Basic Syntax | ⭐⭐ | More practice with the replication operator and logic |
+| 19  | Vector5         | Basic Syntax | ⭐⭐ | More practice with the replication operator and logic |
+
+| 19  | Exams m2014 q4h | Basic Syntax | ⭐ | Just to understand basic verilog syntax |
