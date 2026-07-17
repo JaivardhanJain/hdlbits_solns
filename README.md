@@ -41,6 +41,8 @@ Problem Category and Difficulty
 
 | 19  | Vector5         | Basic Syntax | ⭐⭐ | More practice with the replication operator and logic |
 
-| 44  | Exams m2014 q4h | Basic Syntax | ⭐ | Just to understand basic verilog syntax |
+| 44  | Exams m2014 q4h | Basic Syntax | ⭐ | Just to understand basic verilog syntax          |
 
-| 45  | Exams m2014 q4i | Basic Syntax | ⭐ | Just to understand basic verilog syntax |
+| 45  | Exams m2014 q4i | Basic Syntax | ⭐ | Just to understand basic verilog syntax          |
+
+| 46  | Exams m2014 q4e | Basic Syntax | ⭐ | Basic verilog syntax and boolean algebra         |
