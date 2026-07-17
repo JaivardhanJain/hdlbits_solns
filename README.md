@@ -36,3 +36,5 @@ Problem Category and Difficulty
 | 16  | Vector3     | Basic Syntax | ⭐ | Learn the concatenation operator                 |
 
 | 17  | Vectorr     | Basic Syntax | ⭐ | More practice with the concatenation operator    |
+
+| 18  | Vector4     | Basic Syntax | ⭐ | Learn the replication operator                   |
