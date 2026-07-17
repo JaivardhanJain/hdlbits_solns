@@ -38,3 +38,5 @@ Problem Category and Difficulty
 | 17  | Vectorr     | Basic Syntax | ⭐ | More practice with the concatenation operator    |
 
 | 18  | Vector4     | Basic Syntax | ⭐ | Learn the replication operator                   |
+
+| 19  | Vector5     | Basic Syntax | ⭐⭐ | More practice with the replication operator and logic |
