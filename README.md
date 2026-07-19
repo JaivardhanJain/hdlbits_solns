@@ -61,4 +61,6 @@ Problem Category and Difficulty
 
 | 53  | Mt2015 q4a      | Basic Syntax | ⭐ | Make the circuit described in the question       |
 
-| 54  | Mt2015 q4b      | Waveform Reading | ⭐⭐ | Mkae the circuit described by the waveform |
+| 54  | Mt2015 q4b      | Waveform Reading     | ⭐⭐ | Make the circuit described by the waveform |
+
+| 55  | Mt2015 q4       | Module Instantiation | ⭐⭐ | Instantiate modules and add logic |
