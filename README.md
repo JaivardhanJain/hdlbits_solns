@@ -66,3 +66,5 @@ Problem Category Difficulty and Description
 | 55  | Mt2015 q4       | Module Instantiation | ⭐⭐ | Instantiate modules and add logic          |
 
 | 56  | Ringer          | Combination Circuit from Description | ⭐⭐ | Emulate circuit from description |
+
+| 57  | Thermostat      | Combination Circuit from Description | ⭐⭐ | Emulate circuit from description |
