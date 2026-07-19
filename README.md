@@ -46,3 +46,13 @@ Problem Category and Difficulty
 | 45  | Exams m2014 q4i | Basic Syntax | ⭐ | Just to understand basic verilog syntax          |
 
 | 46  | Exams m2014 q4e | Basic Syntax | ⭐ | Basic verilog syntax and boolean algebra         |
+
+| 47  | Exams m2014 q4f | Basic Syntax | ⭐ | Basic verilog syntax                             |
+
+| 48  | Exams m2014 q4g | Basic Syntax | ⭐⭐ | Basic verilog syntax and boolean algebra      |
+
+| 49  | Gates           | Basic Syntax | ⭐ | Basic verilog syntax                             |
+
+| 50  | 7420           | Basic Syntax | ⭐ | Using logic and wire declaration for a real chip  |
+
+| 51  | Truthtable1     | Truthtable   | ⭐⭐⭐ | Synthesizing circuits from a truthtable     |
