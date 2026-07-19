@@ -53,6 +53,8 @@ Problem Category and Difficulty
 
 | 49  | Gates           | Basic Syntax | ⭐ | Basic verilog syntax                             |
 
-| 50  | 7420           | Basic Syntax | ⭐ | Using logic and wire declaration for a real chip  |
+| 50  | 7420            | Basic Syntax | ⭐ | Using logic and wire declaration for a real chip |
 
 | 51  | Truthtable1     | Truthtable   | ⭐⭐⭐ | Synthesizing circuits from a truthtable     |
+
+| 52  | Mt2015 eq2      | Basic Syntax | ⭐⭐ | Checking equality of 2-bit vectors            |
