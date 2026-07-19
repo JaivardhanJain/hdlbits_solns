@@ -58,3 +58,7 @@ Problem Category and Difficulty
 | 51  | Truthtable1     | Truthtable   | ⭐⭐⭐ | Synthesizing circuits from a truthtable     |
 
 | 52  | Mt2015 eq2      | Basic Syntax | ⭐⭐ | Checking equality of 2-bit vectors            |
+
+| 53  | Mt2015 q4a      | Basic Syntax | ⭐ | Make the circuit described in the question       |
+
+| 54  | Mt2015 q4b      | Waveform Reading | ⭐⭐ | Mkae the circuit described by the waveform |
