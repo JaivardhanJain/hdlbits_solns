@@ -1,7 +1,7 @@
 # hdlbits_solns
 Solutions for HDLBits with explanations, faq, difficulty, categories and best practices 
 
-Problem Category and Difficulty
+Problem Category Difficulty and Description
 
 |  1  | Step One    | Basic Syntax | ⭐ | Just to understand Verilog Syntax                |
 
@@ -64,3 +64,5 @@ Problem Category and Difficulty
 | 54  | Mt2015 q4b      | Waveform Reading     | ⭐⭐ | Make the circuit described by the waveform |
 
 | 55  | Mt2015 q4       | Module Instantiation | ⭐⭐ | Instantiate modules and add logic          |
+
+| 56  | Ringer          | Combination Circuit from Description | ⭐⭐ | Emulate circuit from description |
