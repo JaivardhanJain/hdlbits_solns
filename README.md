@@ -43,5 +43,8 @@ Solutions to [HDLBits](https://hdlbits.01xz.net/wiki/Main_Page) (the Verilog pro
 | 59 | [Gatesv](03_circuits/combinational/basic_gates/59.%20Gatesv/README.md) | Circuits: Combinational (Basic Gates) | ⭐⭐ | Compare each bit of a 4-bit vector to its neighbour (AND/OR/XOR, with wraparound). |
 | 60 | [Gatesv100](03_circuits/combinational/basic_gates/60.%20Gatesv100/README.md) | Circuits: Combinational (Basic Gates) | ⭐⭐ | Same as Gatesv, widened to 100 bits — the vector solution scales unchanged. |
 | 61 | [Mux2to1](03_circuits/combinational/multiplexers/61.%20Mux2to1/README.md) | Circuits: Combinational (Multiplexers) | ⭐ | One-bit 2-to-1 multiplexer: `sel=0` picks `a`, `sel=1` picks `b`. |
+| 62 | [Mux2to1v](03_circuits/combinational/multiplexers/62.%20Mux2to1v/README.md) | Circuits: Combinational (Multiplexers) | ⭐⭐ | Same 2-to-1 mux, widened to 100-bit buses — why the AND/OR gate formula breaks on vectors. |
+| 63 | [Mux256to1](03_circuits/combinational/multiplexers/63.%20Mux256to1/README.md) | Circuits: Combinational (Multiplexers) | ⭐⭐ | 256-to-1 mux built as a single variable bit-select, `in[sel]`, instead of a 256-entry case statement. |
+| 64 | [Mux256to1v](03_circuits/combinational/multiplexers/64.%20Mux256to1v/README.md) | Circuits: Combinational (Multiplexers) | ⭐⭐⭐ | 4-bit-wide 256-to-1 mux — why a variable-bound part-select fails, and the per-bit-concatenation and indexed part-select (`+:`/`-:`) fixes. |
 
-Numbering follows HDLBits's own problem order, so gaps (20–43) mark chapters — Modules: Hierarchy, Procedures, More Verilog Features — not yet solved.
+Numbering follows HDLBits's own problem order, so gaps (20–43) mark chapters — Modules: Hierarchy, Procedures, More Verilog Features — not yet solved. Mux9to1v (between Mux2to1v and Mux256to1) is also not yet solved.
