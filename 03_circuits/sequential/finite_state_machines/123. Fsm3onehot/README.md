@@ -37,9 +37,9 @@ Read the table *backwards*. Instead of "from `A`, where do I go?", ask "which ar
 
 | Next state | In-edges (from state, on `in`) | Equation |
 |:----------:|:-------------------------------|:---------|
-| A | A on 0, C on 0 | `(A | C) & ~in` |
-| B | A on 1, B on 1, D on 1 | `(A | B | D) & in` |
-| C | B on 0, D on 0 | `(B | D) & ~in` |
+| A | A on 0, C on 0 | `(A \| C) & ~in` |
+| B | A on 1, B on 1, D on 1 | `(A \| B \| D) & in` |
+| C | B on 0, D on 0 | `(B \| D) & ~in` |
 | D | C on 1 | `C & in` |
 
 Every arrow in the table appears in exactly one row here. That's the sanity check: 4 states × 2 input values = 8 arrows, and the right-hand column has 2 + 3 + 2 + 1 = 8 terms. The output is `D` alone.
