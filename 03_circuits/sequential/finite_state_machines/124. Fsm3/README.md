@@ -16,7 +16,7 @@ This is the [[Fsm1]] three-part template wrapped around the logic from [[Fsm3one
 2. **State register:** a 4-bit `state` with async reset to `A = 4'b0001`.
 3. **Output:** `out = state[3]`, i.e. "in `D`".
 
-The interesting decision is the encoding itself. In [[Fsm3comb]] and [[Fsm3onehot]], `state` came in on a port, so the encoding was a contract with the testbench. Now `state` is internal. Binary (two flops, a `case` like Fsm3comb's) and one-hot (four flops, per-bit equations) are both correct, and nothing outside the module can tell them apart. `fsm3.v` picks one-hot. That's a reasonable choice for an FPGA target, and it reuses Fsm3onehot's equations directly. `alt1.v` picks binary. Either way, it's a design decision, not a requirement.
+The interesting decision is the encoding itself. In [[Fsm3comb]] and [[Fsm3onehot]], `state` came in on a port, so the encoding was a contract with the testbench. Now `state` is internal. Binary (two flops, a `case` like Fsm3comb's) and one-hot (four flops, per-bit equations) are both correct, and nothing outside the module can tell them apart. `fsm3.v` picks one-hot. That's a reasonable choice for an FPGA target, and it reuses Fsm3onehot's equations directly. `alt2.v` picks binary. Either way, it's a design decision, not a requirement.
 
 A cycle-by-cycle trace that visits every state, starting from reset, with `in` = 1, 0, 1, 0, 0, 1, 1:
 
@@ -33,7 +33,17 @@ A cycle-by-cycle trace that visits every state, starting from reset, with `in` =
 
 At every edge the register holds exactly one hot bit, and `out` is high only for the one cycle spent in `D`.
 
-## Approach 2 — binary encoding (`alt1.v`)
+## Approach 1b — one-hot with named indices (`alt1.v`)
+
+The same four equations as `fsm3.v`, written differently in three ways:
+
+- **Bit indices get names.** `A`–`D` are positions (`A = 0` … `D = 3`), the [[Fsm3onehot]] convention, so the equations read `next_state[A] = ~in && (state[A] || state[C])` and the output is `state[D]`. That's the "one source of truth" fix for `fsm3.v`'s magic numbers (see the gotchas): move `D` to another bit and the equations and output follow it.
+- **It's SystemVerilog throughout:** `logic`, `always_comb`, `always_ff`. That's one dialect consistently, the fix asked for in [[Fsm2]]. As there, it belongs in a `.sv` file for a strict flow.
+- **The equations use the logical operators `&&`/`||`.** On 1-bit operands that's the same circuit, with the caveats in the gotchas.
+
+Its trace is identical to `fsm3.v`'s, bit for bit.
+
+## Approach 2 — binary encoding (`alt2.v`)
 
 This is HDLBits's own sample solution: two state bits, `A`–`D` numbered 0–3, and the next-state logic as a `case` with one branch per table row. It's the same branch-per-row shape as [[Fsm3comb]], now with the state register wrapped around it. The output is `state == D`.
 
@@ -52,7 +62,7 @@ Same input sequence as above, with the register's contents in binary:
 
 The `out` column is identical to the one-hot trace edge for edge, which is the point: the encoding is invisible from the port. What differs is inside.
 
-| | One-hot (`fsm3.v`) | Binary (`alt1.v`) |
+| | One-hot (`fsm3.v`) | Binary (`alt2.v`) |
 |:--|:--|:--|
 | Flip-flops | 4 | 2 |
 | Illegal states | 12 of 16 (incl. lock-up `0000`) | none: all 4 codes are states |
@@ -62,19 +72,22 @@ The `out` column is identical to the one-hot trace edge for edge, which is the p
 | Synthesis sees an FSM? | usually not | yes: reported, re-encodable |
 | Reads against the table | needs the in-edge derivation | row-for-row |
 
-For four states the binary version is smaller, safer and easier to review. One-hot starts to pay off as the FSM grows and the decode logic, not the flop count, sets the clock speed. Even then, the usual move is to write `alt1.v`'s shape and let the tool re-encode it (next gotcha).
+For four states the binary version is smaller, safer and easier to review. One-hot starts to pay off as the FSM grows and the decode logic, not the flop count, sets the clock speed. Even then, the usual move is to write `alt2.v`'s shape and let the tool re-encode it (next gotcha).
 
 ## Gotchas / things to watch for
 
 - **The reset value is what makes one-hot work: reset to `0` and the machine is dead.** In [[Fsm3onehot]], all-zeros was an illegal input that the module merely had to tolerate. Now it can be *stored*. Every next-state equation needs some bit already hot, so `0000` maps to `0000` forever: no error, no `x`, `out` stuck at 0. Writing `state <= 0;` out of habit, as every reset in the chapter has so far, compiles and gives exactly that circuit. The same was true in [[Lfsr5]], where the reset *value* was a functional requirement rather than a formality. Here it has to be `A = 4'b0001`, and using the named parameter rather than a literal is what keeps it right.
-- **The parameters are state *values* now, while the equations use bit *indices*, and only the comments link the two.** `A = 4'b0001` is the pattern, which is the opposite of [[Fsm3onehot]], where `A = 0` was a bit position. The equations, though, still use bare indices `state[0]` … `state[3]`, and `out = state[3]` means "in `D`" only because `D`'s hot bit happens to be bit 3. Re-assign `D = 4'b0100` and the reset still works, but every equation and the output now point at the wrong states, silently. The robust form keeps one source of truth: either index parameters (`localparam A_BIT = 0, …`) used both for the equations and to build the patterns (`4'b1 << A_BIT`), or the patterns used everywhere with a reduction (`|(state & D)`). Mixing a named reset with magic-number logic is the in-between that breaks.
+- **In `fsm3.v`, the parameters are state *values*, while the equations use bit *indices*, and only the comments link the two.** `A = 4'b0001` is the pattern, which is the opposite of [[Fsm3onehot]], where `A = 0` was a bit position. The equations, though, still use bare indices `state[0]` … `state[3]`, and `out = state[3]` means "in `D`" only because `D`'s hot bit happens to be bit 3. Re-assign `D = 4'b0100` and the reset still works, but every equation and the output now point at the wrong states, silently. The robust form keeps one source of truth: either index parameters used both for the equations and to build the patterns (`4'b1 << A`), which is what `alt1.v` does for the equations, or the patterns used everywhere with a reduction (`|(state & D)`). Mixing a named reset with magic-number logic is the in-between that breaks.
 - **Per-bit assignments in an `always @(*)` must cover every bit, or you get a latch.** All four `next_state[i]` are assigned on every pass, so the block is purely combinational. Drop one line and that bit keeps its old value, which is a latch, because this is a *combinational* block. In [[Fsm3onehot]] the same equations used `assign`, where a missing bit would have been undriven (`z`) instead. It's the same slip with a different symptom, and both are silent, which is the per-bit-assignment risk from [[Lfsr5]]. A habit that makes it impossible is to start the block with `next_state = 4'b0000;` and then set bits, the same "default first" pattern as [[Always_nolatches]].
 - **The operators are consistent this time.** Every equation uses `&`, `|`, `~`, with none of the `&&`/`||` mix from [[Fsm3onehot]]. Note the precedence it relies on: `&` binds tighter than `|`, so `state[0] & ~in | state[2] & ~in` groups as intended without parentheses. That's worth knowing, but adding the parentheses costs nothing and saves the reader from checking.
-- **Hand-coded one-hot may hide the FSM from synthesis.** FPGA tools find FSMs by spotting a state register driven through a `case` on its own value. They then report the states, can re-encode, and can add safe-state recovery. Equations on individual bits don't look like an FSM, so the tool just sees four flops and some logic, and you lose the FSM report and the tool's encoding options. The idiomatic version is `alt1.v`'s shape: symbolic states in a `case`, as in [[Fsm1]], with the encoding set by a synthesis attribute (for example `fsm_encoding = "one_hot"` in Vivado). That gives you this circuit and keeps the tool support. Hand-coding is still the right way to *understand* one-hot, which is what Fsm3onehot was for.
+- **Hand-coded one-hot may hide the FSM from synthesis.** FPGA tools find FSMs by spotting a state register driven through a `case` on its own value. They then report the states, can re-encode, and can add safe-state recovery. Equations on individual bits don't look like an FSM, so the tool just sees four flops and some logic, and you lose the FSM report and the tool's encoding options. The idiomatic version is `alt2.v`'s shape: symbolic states in a `case`, as in [[Fsm1]], with the encoding set by a synthesis attribute (for example `fsm_encoding = "one_hot"` in Vivado). That gives you this circuit and keeps the tool support. Hand-coding is still the right way to *understand* one-hot, which is what Fsm3onehot was for.
 - **Recovery from illegal states is still absent.** The async reset puts the machine into a legal state, but nothing brings it back if a glitch or radiation upset produces `0000` or a two-hot pattern later. See [[Fsm3onehot]] for how those behave. It passes the grader, and in many designs a reset is the agreed recovery. Just be aware that one-hot gives you 12 illegal states to think about, where binary encoding of four states gives you none.
-- **In `alt1.v`, "make sure `state` is big enough" is a real warning, because nothing checks it.** `parameter A=0, ..., D=3` gives unsized 32-bit integers, and they're squeezed into a 2-bit register. Four states fit. Add a fifth, `E = 4`, and leave `state` at `[1:0]`, and `state <= E` silently truncates to `2'b00`, which is `A`. Meanwhile the `case` branch `E:` compares a 2-bit state against 32-bit 4, so it can never match. No error, just a state that can't be entered and a transition that lands somewhere else. It's the implicit-resizing theme from Step One (`1` vs `1'b1`) again. Sized `localparam [1:0] A = 2'd0, ...` makes the widths explicit, and a SystemVerilog `enum` sizes the register for you. Separately, `alt1.v`'s `case` also lacks a `default`: harmless with 2 bits and 4 states, but see [[Fsm3comb]] for why `default: next = 2'bx;` is still worth it.
+- **In `alt1.v`, the reset is a blocking `=` inside `always_ff`, and it's a bare literal.** `state = 4'b0001;` next to `state <= next_state;` mixes blocking and non-blocking assignments on one flop. That's the issue flagged in [[Fsm1s]]: a lint error, refused by some synthesis tools, and particularly odd inside `always_ff`, a keyword that exists to state "this is a flop". Write `state <= 4'b0001;`. Separately, the literal is the one place in `alt1.v` that doesn't use the index names: it's right only because `A` happens to be bit 0. `state <= 4'b1 << A;` keeps the reset tied to `A`, so it can't drift from the equations, and the reset is the line that matters most in one-hot (first gotcha).
+- **`&&`/`||` with `~`: logical operators mixed with a bitwise negation.** `~in && (state[A] || state[C])` is correct because every operand is 1 bit, so logical and bitwise agree. But the logical counterpart of `~` is `!`, and `fsm3.v` writes the same equations with `&`/`|`/`~`. Either set is fine on single bits. Mixing them is how the [[Norgate]] confusion creeps in once an operand becomes a vector, where `||` collapses to one bit and `|` doesn't.
+- **In `alt2.v`, "make sure `state` is big enough" is a real warning, because nothing checks it.** `parameter A=0, ..., D=3` gives unsized 32-bit integers, and they're squeezed into a 2-bit register. Four states fit. Add a fifth, `E = 4`, and leave `state` at `[1:0]`, and `state <= E` silently truncates to `2'b00`, which is `A`. Meanwhile the `case` branch `E:` compares a 2-bit state against 32-bit 4, so it can never match. No error, just a state that can't be entered and a transition that lands somewhere else. It's the implicit-resizing theme from Step One (`1` vs `1'b1`) again. Sized `localparam [1:0] A = 2'd0, ...` makes the widths explicit, and a SystemVerilog `enum` sizes the register for you. Separately, `alt2.v`'s `case` also lacks a `default`: harmless with 2 bits and 4 states, but see [[Fsm3comb]] for why `default: next = 2'bx;` is still worth it.
 
 ## Solution
 
 - `fsm3.v` — one-hot: four flops, per-bit next-state equations derived from in-edges.
-- `alt1.v` — binary: two flops, a symbolic `case` (HDLBits's sample solution).
+- `alt1.v` — one-hot in SystemVerilog, with named bit indices.
+- `alt2.v` — binary: two flops, a symbolic `case` (HDLBits's sample solution).
